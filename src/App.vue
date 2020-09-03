@@ -75,7 +75,7 @@ export default {
           ag_future_previous_settlement_price,
           ag_future_averge_price,
           ag_future_price,
-          ag_future_distance: ag_future_price - ag_future_previous_settlement_price,
+          ag_future_distance: ag_future_price - ag_future_averge_price,
           ag_fund_net_value,
           ag_fund_price,
           ag_fund_valuation,
