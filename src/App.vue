@@ -92,7 +92,7 @@ export default {
     this.fetchData()
     setInterval(() => {
       if (this.autoUpdate) this.fetchData()
-    }, 5000);
+    }, 10000);
   },
   methods:{
     fetchData(){
