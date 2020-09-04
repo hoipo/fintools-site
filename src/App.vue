@@ -4,8 +4,11 @@
       <el-header>白银基金套利工具</el-header>
       
       <el-main>
-        <el-row type="flex" justify="end">
-          <el-col :span=4>
+        <el-row type="flex" justify="space-between">
+          <el-col :span=8 class="updatetime">
+            数据更新于：{{time}}
+          </el-col>
+          <el-col :span=8 class="autoupdate-switch">
             <el-switch
               v-model="autoUpdate"
               active-text="自动刷新">
@@ -55,8 +58,8 @@
       </el-table-column>
     </el-table>
   <el-row type="flex" class="row-bg" justify="center">
-    <el-col :span="12">
-      <el-card class="box-card grid-content bg-purple">
+    <el-col :span="10" :xs="{span: 22}">
+      <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>操作提示</span>
         </div>
@@ -77,7 +80,7 @@
 </template>
 
 <script>
-
+import { Message } from "element-ui";
 export default {
   name: 'App',
   data() {
@@ -85,7 +88,8 @@ export default {
           tableData: [],
           premium: '-',
           tips: '-',
-          autoUpdate: window.localStorage.getItem('autoUpdate') === '1' ? true : false
+          autoUpdate: window.localStorage.getItem('autoUpdate') === '1' ? true : false,
+          time: '-'
         }
       },
   mounted(){
@@ -104,7 +108,8 @@ export default {
         ag_future_price,
         ag_fund_net_value,
         ag_future_averge_price,
-        ag_fund_price
+        ag_fund_price,
+        time
         }) => {
          const ag_fund_valuation = Math.round((ag_fund_net_value*(ag_future_averge_price/ag_future_previous_settlement_price)) * 10e3) / 10e3
          const ag_fund_valuation_premium = Math.round((ag_fund_price/ag_fund_valuation - 1) * 10000)/100 + '%'
@@ -119,10 +124,19 @@ export default {
             ag_fund_valuation,
             ag_fund_valuation_premium,
           }
+        if (time) {
+          this.time = time
+        }
         if (this.tableData.length === 0) {
           this.tableData.push(data)
         } else {
           this.tableData.splice(0,1, data)
+          Message({
+            message:'数据已自动更新',
+            center: true,
+            type: 'success',
+            duration: 1000
+            })
         }
         this.premium = ag_fund_valuation_premium
         if (parseFloat(ag_fund_valuation_premium) >= 0.5) {
@@ -204,5 +218,11 @@ html, body{
   .green{
     color: #67C23A;
   }
-
+.updatetime{
+  text-align: left;
+  font-size: 13px;
+}
+.autoupdate-switch{
+  text-align: right;
+}
 </style>
