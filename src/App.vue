@@ -127,9 +127,9 @@ export default {
         this.premium = ag_fund_valuation_premium
         if (parseFloat(ag_fund_valuation_premium) >= 0.5) {
           this.tips = "卖出+申购"
-        } else if (parseFloat(ag_fund_valuation_premium) <= 2) {
+        } else if (parseFloat(ag_fund_valuation_premium) <= -2) {
           this.tips = "买入+赎回(不满7天也赎回)"
-        } else if (parseFloat(ag_fund_valuation_premium) <= 1) {
+        } else if (parseFloat(ag_fund_valuation_premium) <= -1) {
           this.tips = "买入+赎回(满7天才赎回)"
         } else {
           this.tips = "无操作"
