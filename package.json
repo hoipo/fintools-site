@@ -42,6 +42,13 @@
     "not dead"
   ],
   "vue": {
-    "publicPath": "/fintools/"
+    "publicPath": "/fintools/",
+    "pages": {
+    "index": {
+        "entry": "src/main.js",
+        "template": "public/index.html",
+        "title": "恭喜发财"
+        }
+    }
   }
 }

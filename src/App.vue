@@ -72,12 +72,54 @@
     </el-card>
       </el-col>
   </el-row>
-    
-
+    <el-button @click="setSubscribe" type="primary" round>订阅提醒</el-button>
       </el-main>
     </el-container>
+     <el-dialog
+      title="设置提醒"
+      :visible.sync="dialogVisible"
+      width="50%"
+      >
+      <el-form label-width="80px">
+        <el-form-item label="溢价阈值">
+          <el-input-number
+        class="tips-input"
+        v-model="subscribe.upper"
+         :precision="1" 
+         :step="0.1" 
+         :max="10" 
+         :min="0"
+         :disabled="!subscribe.on"
+         ></el-input-number> %
+      </el-form-item>
+        <el-form-item label="折价阈值">
+         <el-input-number
+      class="tips-input"
+        v-model="subscribe.lower"
+         :precision="1" 
+         :step="0.1" 
+         :max="0" 
+         :min="-10"
+         :disabled="!subscribe.on"
+         ></el-input-number> %
+      </el-form-item>
+        <el-form-item label="开关">
+         <el-switch
+          v-model="subscribe.on">
+        </el-switch>
+      </el-form-item>
+    </el-form>
+   
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">完成</el-button>
+      </span>
+    </el-dialog>
   </div>
+
+  
 </template>
+
+
 
 <script>
 import { Message } from "element-ui";
@@ -85,6 +127,12 @@ export default {
   name: 'App',
   data() {
         return {
+          subscribe: {
+            on: window.localStorage.getItem('subscribe') === '1' ? true : false,
+            upper: window.localStorage.getItem('upper') ? Number(window.localStorage.getItem('upper')) : 1,
+            lower: window.localStorage.getItem('upper') ? Number(window.localStorage.getItem('lower')) : -1
+          },
+          dialogVisible: false,
           tableData: [],
           premium: '-',
           tips: '-',
@@ -96,9 +144,40 @@ export default {
     this.fetchData()
     setInterval(() => {
       if (this.autoUpdate) this.fetchData()
-    }, 10000);
+    }, 30000);
+    window.sound = new Audio();
+                window.sound.src = require('./assets/notice.mp3')
   },
   methods:{
+    popNotice(msg) {
+            if (Notification.permission === "granted") {
+                new Notification(msg, {
+                    body: `操作：${this.tips}`,
+                    icon: require('./assets/notice.png')
+                });
+                
+                window.sound.play()
+            }    
+    },
+    setSubscribe(){
+      if (window.Notification) {
+          switch (Notification.permission) {
+            case "granted":
+              this.dialogVisible = true
+              break;
+          case "denied":
+              alert('浏览器禁止了Notification提示，请授权')
+              break;
+            default:
+              Notification.requestPermission().then(() => {
+                this.setSubscribe()
+              });
+              break;
+          }
+    } else {
+        alert('浏览器不支持Notification');    
+    }
+    },
     fetchData(){
       fetch('http://119.27.188.244/api/get_live_data_of_ag')
       .then(response => response.json())
@@ -148,6 +227,18 @@ export default {
         } else {
           this.tips = "无操作"
         }
+        // 弹出提醒
+        if (this.subscribe.on) {
+          if (parseFloat(ag_fund_valuation_premium) >= this.subscribe.upper) {
+            this.popNotice(
+              `溢价已达${ag_fund_valuation_premium}`
+              )
+          } else if (parseFloat(ag_fund_valuation_premium) <= this.subscribe.lower) {
+            this.popNotice(
+              `折价已达${ag_fund_valuation_premium}`
+              )
+          }
+        }
       })
     }
   },
@@ -157,6 +248,19 @@ export default {
         window.localStorage.setItem('autoUpdate', '1')
       } else {
         window.localStorage.setItem('autoUpdate', '0')
+      }
+    },
+    'subscribe.on': function (newValue) {
+       if (newValue) {
+        window.localStorage.setItem('subscribe', '1')
+      } else {
+        window.localStorage.setItem('subscribe', '0')
+      }
+    },
+    dialogVisible: function (newValue) {
+      if (!newValue) {
+        window.localStorage.setItem('upper', this.subscribe.upper)
+        window.localStorage.setItem('lower', this.subscribe.lower)
       }
     }
   },
@@ -224,5 +328,11 @@ html, body{
 }
 .autoupdate-switch{
   text-align: right;
+}
+.box-card{
+  margin-bottom: 15px;
+}
+.el-form-item__content{
+  text-align: left;
 }
 </style>

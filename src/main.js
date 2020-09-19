@@ -10,6 +10,12 @@ import {
   Row,
   Col,
   Switch,
+  Button,
+  Dialog,
+  InputNumber,
+  Form,
+  FormItem,
+  Input,
 } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
@@ -24,6 +30,12 @@ Vue.use(Card);
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Switch);
+Vue.use(Button);
+Vue.use(Dialog);
+Vue.use(InputNumber);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Input);
 
 new Vue({
   render: h => h(App),
