@@ -146,7 +146,7 @@ export default {
       if (this.autoUpdate) this.fetchData()
     }, 30000);
     window.sound = new Audio();
-                window.sound.src = require('./assets/notice.mp3')
+    window.sound.src = require('./assets/notice.mp3')
   },
   methods:{
     popNotice(msg) {
@@ -179,7 +179,7 @@ export default {
     }
     },
     fetchData(){
-      fetch('http://119.27.188.244/api/get_live_data_of_ag')
+      fetch('/api/get_live_data_of_ag')
       .then(response => response.json())
       .then(({
         date,
