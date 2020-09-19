@@ -78,7 +78,7 @@
      <el-dialog
       title="设置提醒"
       :visible.sync="dialogVisible"
-      width="50%"
+      width="340px"
       >
       <el-form label-width="80px">
         <el-form-item label="溢价阈值">
