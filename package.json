@@ -42,7 +42,7 @@
     "not dead"
   ],
   "vue": {
-    "publicPath": "/fintools/",
+    "publicPath": "/ag/",
     "pages": {
     "index": {
         "entry": "src/main.js",
