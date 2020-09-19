@@ -179,7 +179,7 @@ export default {
     }
     },
     fetchData(){
-      fetch('/api/get_live_data_of_ag')
+      fetch(`${window.location.hostname === 'localhost' ? 'https://fintools.j888.ml:8443' : ''}/api/get_live_data_of_ag`)
       .then(response => response.json())
       .then(({
         date,
@@ -253,6 +253,8 @@ export default {
     'subscribe.on': function (newValue) {
        if (newValue) {
         window.localStorage.setItem('subscribe', '1')
+        window.localStorage.setItem('autoUpdate', '1')
+        this.autoUpdate = true
       } else {
         window.localStorage.setItem('subscribe', '0')
       }
