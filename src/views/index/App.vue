@@ -41,7 +41,7 @@
         label="现均差价">
       </el-table-column>
        <el-table-column
-        prop="ag_fund_net_value"
+        prop="ag_fund_previous_net_value"
         label="基金昨天净值">
       </el-table-column>
       <el-table-column
@@ -189,12 +189,12 @@ export default {
         date,
         ag_future_previous_settlement_price,
         ag_future_price,
-        ag_fund_net_value,
+        ag_fund_previous_net_value,
         ag_future_averge_price,
         ag_fund_price,
         time
         }) => {
-         const ag_fund_valuation = Math.round((ag_fund_net_value*(ag_future_averge_price/ag_future_previous_settlement_price)) * 10e3) / 10e3
+         const ag_fund_valuation = Math.round((ag_fund_previous_net_value*(ag_future_averge_price/ag_future_previous_settlement_price)) * 10e3) / 10e3
          const ag_fund_valuation_premium = Math.round((ag_fund_price/ag_fund_valuation - 1) * 10000)/100 + '%'
          const data = {
             date,
@@ -202,7 +202,7 @@ export default {
             ag_future_averge_price,
             ag_future_price,
             ag_future_distance: ag_future_price - ag_future_averge_price,
-            ag_fund_net_value,
+            ag_fund_previous_net_value,
             ag_fund_price,
             ag_fund_valuation,
             ag_fund_valuation_premium,
