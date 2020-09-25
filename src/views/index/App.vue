@@ -73,6 +73,7 @@
       </el-col>
   </el-row>
     <el-button @click="setSubscribe" type="primary" round>订阅提醒</el-button>
+    <el-button @click="openHistory" round>历史数据</el-button>
       </el-main>
     </el-container>
      <el-dialog
@@ -146,14 +147,17 @@ export default {
       if (this.autoUpdate) this.fetchData()
     }, 30000);
     window.sound = new Audio();
-    window.sound.src = require('./assets/notice.mp3')
+    window.sound.src = require('../../assets/notice.mp3')
   },
   methods:{
+    openHistory(){
+      window.open('history.html')
+    },
     popNotice(msg) {
             if (Notification.permission === "granted") {
                 new Notification(msg, {
                     body: `操作：${this.tips}`,
-                    icon: require('./assets/notice.png')
+                    icon: require('../../assets/notice.png')
                 });
                 
                 window.sound.play()

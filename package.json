@@ -44,11 +44,17 @@
   "vue": {
     "publicPath": "/ag/",
     "pages": {
-    "index": {
-        "entry": "src/main.js",
+      "index": {
+        "entry": "src/views/index/main.js",
         "template": "public/index.html",
         "title": "恭喜发财"
+        },
+      "history": {
+          "entry": "src/views/history/main.js",
+          "template": "public/history.html",
+          "title": "历史数据"
         }
+      }
     }
-  }
 }
+
