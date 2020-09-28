@@ -87,6 +87,7 @@ export default {
           const ag_fund_actual_premium = item.ag_fund_net_value ? (Math.round((item.ag_fund_price/item.ag_fund_net_value - 1) * 10000)/100 + '%') : '-'
           const valuation_difference = item.ag_fund_net_value ? (Math.round((parseFloat(ag_fund_actual_premium) - parseFloat(ag_fund_valuation_premium))*100)/100 + '%') : '-'
           return Object.assign(item, {
+            ag_fund_net_value: item.ag_fund_net_value || '-',
             ag_future_distance,
             ag_fund_valuation,
             ag_fund_valuation_premium,
