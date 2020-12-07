@@ -95,7 +95,6 @@
 
 <script>
 import { Message } from "element-ui";
-import moment from "moment";
 import OperationTips from "../../components/OperationTips.vue";
 import Calculator from "../../components/Calculator.vue";
 export default {
@@ -205,10 +204,7 @@ export default {
               ag_fund_valuation_premium,
             };
             if (time) {
-              this.time = moment
-                .utc(time, "HH:mm:ss")
-                .utcOffset(8)
-                .format("HH:mm:ss");
+              this.time = time
             }
             if (this.tableData.length === 0) {
               this.tableData.push(data);

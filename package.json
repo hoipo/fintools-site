@@ -10,7 +10,6 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
-    "moment": "^2.29.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {
