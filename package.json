@@ -10,6 +10,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
+    "moment": "^2.29.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {
@@ -42,19 +43,18 @@
     "not dead"
   ],
   "vue": {
-    "publicPath": "/ag/",
+    "publicPath": "/",
     "pages": {
       "index": {
         "entry": "src/views/index/main.js",
         "template": "public/index.html",
         "title": "恭喜发财"
-        },
+      },
       "history": {
-          "entry": "src/views/history/main.js",
-          "template": "public/history.html",
-          "title": "历史数据"
-        }
+        "entry": "src/views/history/main.js",
+        "template": "public/history.html",
+        "title": "历史数据"
       }
     }
+  }
 }
-

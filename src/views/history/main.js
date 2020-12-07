@@ -16,6 +16,8 @@ import {
   Form,
   FormItem,
   Input,
+  Select,
+  Option,
 } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
@@ -36,6 +38,8 @@ Vue.use(InputNumber);
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Input);
+Vue.use(Select);
+Vue.use(Option);
 
 new Vue({
   render: (h) => h(History),
