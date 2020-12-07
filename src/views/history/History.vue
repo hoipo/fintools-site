@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <el-container>
-      <el-main>
         <el-header>白银基金套利工具</el-header>
+      <el-main>
         <el-form :inline="true" :model="setting" class="form-inline">
           <el-form-item label="数据条数">
             <el-select class="limit-select" v-model="setting.limit" placeholder="数据条数">
@@ -149,7 +149,6 @@ body {
 }
 .form-inline{
   text-align: left;
-  margin-top: 1em;
 }
 .limit-select{
   width: 8em;
