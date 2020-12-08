@@ -169,7 +169,7 @@ export default {
       }
     },
     fetchData() {
-      fetch("/api/get_live_data_of_ag")
+      fetch("http://localhost:5000/api/get_live_data_of_ag")
         .then((response) => response.json())
         .then(
           ({
@@ -217,8 +217,10 @@ export default {
                 duration: 1000,
               });
             }
-            this.premium = ag_fund_valuation_premium;
-            if (parseFloat(ag_fund_valuation_premium) >= 0.5) {
+            this.premium = ag_fund_price ? ag_fund_valuation_premium : '竞价中';
+            if (ag_fund_price === 0) {
+              this.tips = "9:25后才有数据";
+            } else if (parseFloat(ag_fund_valuation_premium) >= 0.5) {
               this.tips = "卖出+申购";
             } else if (parseFloat(ag_fund_valuation_premium) <= -2) {
               this.tips = "买入+赎回(不满7天也赎回)";
