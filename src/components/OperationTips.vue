@@ -12,7 +12,7 @@
           <el-tooltip effect="dark" content="实验性功能，公式为：期货现价 / 期货昨天结算价 * 基金昨天净值" placement="top">
             <i class="el-icon-info" />
           </el-tooltip>
-    盘中期货映射估值: <span>{{future_mapping_valuation}} {{future_mapping_valuation_premium}}</span>
+    盘中期货映射估值: <span>{{future_mapping_valuation}} | {{future_mapping_valuation_premium}}</span>
         </div>
          <div class="tips">
           操作: {{tips}}
