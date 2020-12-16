@@ -6,41 +6,42 @@
         <el-row type="flex" justify="space-between">
           <el-col :span="8" class="updatetime"> 数据更新于：{{ time }} </el-col>
           <el-col :span="8" class="autoupdate-switch">
-            <el-switch v-model="autoUpdate" active-text="自动刷新"> </el-switch>
+            <el-switch v-model="autoUpdate" active-text="自动刷新" />
           </el-col>
         </el-row>
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" label="日期"> </el-table-column>
+          <el-table-column prop="date" label="日期" />
           <el-table-column
             prop="ag_future_previous_settlement_price"
             label="期货昨结算"
-          >
-          </el-table-column>
-          <el-table-column prop="ag_future_averge_price" label="期货均价">
-          </el-table-column>
-          <el-table-column prop="ag_future_price" label="期货现价">
-          </el-table-column>
-          <el-table-column prop="ag_future_distance" label="现均差价">
-          </el-table-column>
+          />
+
+          <el-table-column prop="ag_future_averge_price" label="期货均价" />
+
+          <el-table-column prop="ag_future_price" label="期货现价" />
+          <el-table-column prop="ag_future_distance" label="现均差价" />
           <el-table-column
             prop="ag_fund_previous_net_value"
             label="基金昨天净值"
           >
           </el-table-column>
-          <el-table-column prop="ag_fund_price" label="基金现价">
-          </el-table-column>
-          <el-table-column prop="ag_fund_valuation" label="今日基金估值">
-          </el-table-column>
+          <el-table-column prop="ag_fund_price" label="基金现价" />
+
+          <el-table-column prop="ag_fund_valuation" label="今日基金估值" />
+          <el-table-column class-name="experimental" prop="future_mapping_valuation" label="期货实时映射估值" />
           <el-table-column
             prop="ag_fund_valuation_premium"
             label="今日估算溢价"
-          >
-          </el-table-column>
+          />
         </el-table>
-        <operation-tips :premium="premium" :tips="tips"></operation-tips>
+        <operation-tips
+          :premium="premium"
+          :future_mapping_valuation="future_mapping_valuation"
+          :future_mapping_valuation_premium="future_mapping_valuation_premium"
+          :tips="tips"
+        />
         <el-button @click="setSubscribe" type="primary" round
-          >订阅提醒</el-button
-        >
+          >订阅提醒</el-button>
         <el-button @click="openHistory" round>历史数据</el-button>
         <el-button @click="triggerCalculator(true)" round
           >卖出申购计算器</el-button
@@ -91,8 +92,6 @@
   </div>
 </template>
 
-
-
 <script>
 import { Message } from "element-ui";
 import OperationTips from "../../components/OperationTips.vue";
@@ -117,12 +116,18 @@ export default {
       dialogVisible: false,
       tableData: [],
       premium: "-",
+      future_mapping_valuation: 0,
       tips: "-",
       autoUpdate:
         window.localStorage.getItem("autoUpdate") === "1" ? true : false,
       time: "-",
       showCalculator: false,
     };
+  },
+  computed: {
+    future_mapping_valuation_premium: function () {
+      return (Math.round((this.tableData[0].future_mapping_valuation / this.tableData[0].ag_fund_price - 1)*10e3)/10e3 * 100 + '%') || ''
+    }
   },
   mounted() {
     this.fetchData();
@@ -169,7 +174,7 @@ export default {
       }
     },
     fetchData() {
-      fetch("http://localhost:5000/api/get_live_data_of_ag")
+      fetch("https://ag.fintools.xyz/api/get_live_data_of_ag")
         .then((response) => response.json())
         .then(
           ({
@@ -192,6 +197,8 @@ export default {
               Math.round((ag_fund_price / ag_fund_valuation - 1) * 10000) /
                 100 +
               "%";
+            const future_mapping_valuation = Math.round(ag_future_price / ag_future_previous_settlement_price *
+                  ag_fund_previous_net_value * 10e3) / 10e3;
             const data = {
               date,
               ag_future_previous_settlement_price,
@@ -202,9 +209,10 @@ export default {
               ag_fund_price,
               ag_fund_valuation,
               ag_fund_valuation_premium,
+              future_mapping_valuation,
             };
             if (time) {
-              this.time = time
+              this.time = time;
             }
             if (this.tableData.length === 0) {
               this.tableData.push(data);
@@ -217,7 +225,8 @@ export default {
                 duration: 1000,
               });
             }
-            this.premium = ag_fund_price ? ag_fund_valuation_premium : '竞价中';
+            this.premium = ag_fund_price ? ag_fund_valuation_premium : "竞价中";
+            this.future_mapping_valuation = future_mapping_valuation
             if (ag_fund_price === 0) {
               this.tips = "9:25后才有数据";
             } else if (parseFloat(ag_fund_valuation_premium) >= 0.5) {
@@ -230,7 +239,7 @@ export default {
               this.tips = "无操作";
             }
             // 弹出提醒
-            if (this.subscribe.on) {
+            if (this.subscribe.on && ag_fund_price !== 0) {
               if (
                 parseFloat(ag_fund_valuation_premium) >= this.subscribe.upper
               ) {
@@ -325,5 +334,8 @@ body {
 
 .el-form-item__content {
   text-align: left;
+}
+.experimental{
+  color:darkgray;
 }
 </style>

@@ -16,6 +16,7 @@ import {
   Form,
   FormItem,
   Input,
+  Tooltip
 } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
@@ -36,6 +37,7 @@ Vue.use(InputNumber);
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Input);
+Vue.use(Tooltip);
 
 new Vue({
   render: h => h(App),
