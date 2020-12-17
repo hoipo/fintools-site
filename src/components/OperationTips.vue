@@ -9,10 +9,16 @@
           溢价: {{premium}}
         </div>
         <div class="realtime-premium">
-          <el-tooltip effect="dark" content="实验性功能，公式为：期货现价 / 期货昨天结算价 * 基金昨天净值" placement="top">
+          <el-tooltip effect="dark" content="期货现价 / 期货昨天结算价 * 基金昨天净值" placement="top">
             <i class="el-icon-info" />
           </el-tooltip>
     盘中期货映射估值: <span>{{future_mapping_valuation}}</span>
+        </div>
+        <div class="realtime-premium">
+          <el-tooltip effect="dark" content="1 - 基金交易现价 / 映射价" placement="top">
+            <i class="el-icon-info" />
+          </el-tooltip>
+    基金/期货盘中实时折价: <span :class="future_mapping_valuation_premium > 0 ? 'green' : 'red'">{{(future_mapping_valuation_premium*100).toFixed(2) + '%'}}</span>
         </div>
         <div class="tips">
           操作: {{tips}}
@@ -28,7 +34,7 @@ export default {
   props: {
     premium: String,
     future_mapping_valuation: Number,
-    future_mapping_valuation_premium: String,
+    future_mapping_valuation_premium: Number,
     tips: String,
   }
 };

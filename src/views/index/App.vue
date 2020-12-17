@@ -126,7 +126,7 @@ export default {
   },
   computed: {
     future_mapping_valuation_premium: function () {
-      return (Math.round((this.tableData[0].future_mapping_valuation / this.tableData[0].ag_fund_price - 1)*10e3)/10e3 * 100 + '%') || ''
+      return Math.round((this.tableData[0].future_mapping_valuation / this.tableData[0].ag_fund_price - 1)*10e3) / 10e3
     }
   },
   mounted() {
@@ -174,7 +174,7 @@ export default {
       }
     },
     fetchData() {
-      fetch("https://ag.fintools.xyz/api/get_live_data_of_ag")
+      fetch("/api/get_live_data_of_ag")
         .then((response) => response.json())
         .then(
           ({
