@@ -1,6 +1,6 @@
 <template>
-    <el-row type="flex" class="row-bg" justify="center">
-    <el-col :span="10" :xs="{span: 22}">
+    
+    <el-col :span="8" :xs="{span: 22}" class="box-card-container">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>操作提示</span>
@@ -25,7 +25,6 @@
         </div>
     </el-card>
       </el-col>
-  </el-row>
 </template>
 
 <script>
@@ -41,8 +40,8 @@ export default {
 </script>
 
 <style scoped>
-.row-bg {
-  margin-top: 30px;
+.box-card-container{
+  min-width: 285px;
 }
 .box-card {
   margin-bottom: 15px;
@@ -73,4 +72,6 @@ export default {
 .realtime-premium > i {
   margin-right: 2px;
 }
+
+
 </style>

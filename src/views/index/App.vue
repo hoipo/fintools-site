@@ -28,20 +28,29 @@
           <el-table-column prop="ag_fund_price" label="基金现价" />
 
           <el-table-column prop="ag_fund_valuation" label="今日基金估值" />
-          <el-table-column class-name="experimental" prop="future_mapping_valuation" label="期货实时映射估值" />
+          <el-table-column
+            class-name="experimental"
+            prop="future_mapping_valuation"
+            label="期货实时映射估值"
+          />
           <el-table-column
             prop="ag_fund_valuation_premium"
             label="今日估算溢价"
           />
         </el-table>
-        <operation-tips
-          :premium="premium"
-          :future_mapping_valuation="future_mapping_valuation"
-          :future_mapping_valuation_premium="future_mapping_valuation_premium"
-          :tips="tips"
-        />
+        <el-row type="flex" class="row-bg" justify="space-around">
+          <operation-tips
+            :premium="premium"
+            :future_mapping_valuation="future_mapping_valuation"
+            :future_mapping_valuation_premium="future_mapping_valuation_premium"
+            :tips="tips"
+          />
+          <chart />
+        </el-row>
+
         <el-button @click="setSubscribe" type="primary" round
-          >订阅提醒</el-button>
+          >订阅提醒</el-button
+        >
         <el-button @click="openHistory" round>历史数据</el-button>
         <el-button @click="triggerCalculator(true)" round
           >卖出申购计算器</el-button
@@ -96,11 +105,13 @@
 import { Message } from "element-ui";
 import OperationTips from "../../components/OperationTips.vue";
 import Calculator from "../../components/Calculator.vue";
+import Chart from "../../components/Chart.vue";
 export default {
   name: "App",
   components: {
     "operation-tips": OperationTips,
     calculator: Calculator,
+    chart: Chart,
   },
   data() {
     return {
@@ -126,8 +137,15 @@ export default {
   },
   computed: {
     future_mapping_valuation_premium: function () {
-      return Math.round((this.tableData[0].future_mapping_valuation / this.tableData[0].ag_fund_price - 1)*10e3) / 10e3
-    }
+      return this.tableData.length > 0
+        ? Math.round(
+            (this.tableData[0].future_mapping_valuation /
+              this.tableData[0].ag_fund_price -
+              1) *
+              10e3
+          ) / 10e3
+        : 0;
+    },
   },
   mounted() {
     this.fetchData();
@@ -174,7 +192,7 @@ export default {
       }
     },
     fetchData() {
-      fetch("/api/get_live_data_of_ag")
+      fetch(`${window.location.host.includes('localhost') ? 'http://localhost' : ''}/api/get_live_data_of_ag`)
         .then((response) => response.json())
         .then(
           ({
@@ -197,8 +215,12 @@ export default {
               Math.round((ag_fund_price / ag_fund_valuation - 1) * 10000) /
                 100 +
               "%";
-            const future_mapping_valuation = Math.round(ag_future_price / ag_future_previous_settlement_price *
-                  ag_fund_previous_net_value * 10e3) / 10e3;
+            const future_mapping_valuation =
+              Math.round(
+                (ag_future_price / ag_future_previous_settlement_price) *
+                  ag_fund_previous_net_value *
+                  10e3
+              ) / 10e3;
             const data = {
               date,
               ag_future_previous_settlement_price,
@@ -226,7 +248,7 @@ export default {
               });
             }
             this.premium = ag_fund_price ? ag_fund_valuation_premium : "竞价中";
-            this.future_mapping_valuation = future_mapping_valuation
+            this.future_mapping_valuation = future_mapping_valuation;
             if (ag_fund_price === 0) {
               this.tips = "9:25后才有数据";
             } else if (parseFloat(ag_fund_valuation_premium) >= 0.5) {
@@ -257,9 +279,9 @@ export default {
   watch: {
     autoUpdate: function (newValue) {
       if (newValue) {
-        window.localStorage.setItem("autoUpdate", "1");
+        window.localStorage.setItem("autoUpdate", "1")
       } else {
-        window.localStorage.setItem("autoUpdate", "0");
+        window.localStorage.setItem("autoUpdate", "0")
       }
     },
     "subscribe.on": function (newValue) {
@@ -294,6 +316,7 @@ body {
   text-align: center;
   color: #2c3e50;
 }
+
 .el-header {
   background-color: #409eff;
   color: #fff;
@@ -335,7 +358,19 @@ body {
 .el-form-item__content {
   text-align: left;
 }
-.experimental{
-  color:darkgray;
+.experimental {
+  color: darkgray;
+}
+.row-bg {
+  margin-top: 30px;
+}
+.el-button{
+  margin: 10px !important;
+}
+
+@media screen and (max-width: 960px) {
+  .row-bg {
+    flex-wrap: wrap;
+  }
 }
 </style>
