@@ -13,7 +13,7 @@
             <el-button type="primary" @click="onSubmit">查询</el-button>
           </el-form-item>
         </el-form>
-        <el-table :data="list" style="width: 100%">
+        <el-table :data="list" style="width: 100%" size='small'>
           <el-table-column prop="date" label="日期"> </el-table-column>
           <el-table-column
             prop="ag_future_previous_settlement_price"
@@ -32,6 +32,8 @@
           >
           </el-table-column>
           <el-table-column prop="ag_fund_price" label="基金收盘价">
+          </el-table-column>
+          <el-table-column prop="ag_fund_cap" label="基金规模(万份)">
           </el-table-column>
           <el-table-column prop="ag_fund_valuation" label="今日基金估值">
           </el-table-column>
