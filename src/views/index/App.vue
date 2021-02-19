@@ -150,8 +150,9 @@ export default {
   mounted() {
     this.fetchData();
     setInterval(() => {
-      if (this.autoUpdate) this.fetchData();
-    }, 30000);
+      const hour = (new Date()).getHours()
+      if (this.autoUpdate && hour >= 9 && hour < 15) this.fetchData();
+    }, 6000);
     window.sound = new Audio();
     window.sound.src = require("../../assets/notice.mp3");
   },
@@ -192,7 +193,7 @@ export default {
       }
     },
     fetchData() {
-      fetch(`${window.location.host.includes('localhost') ? 'http://localhost' : ''}/api/get_live_data_of_ag`)
+      fetch(`${window.location.host.includes('localhost') ? 'http://localhost:5000' : ''}/api/get_live_data_of_ag`)
         .then((response) => response.json())
         .then(
           ({

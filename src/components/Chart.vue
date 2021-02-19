@@ -116,7 +116,7 @@ export default {
       window.myChart = myChart;
       const date = new Date();
       fetch(
-        `${window.location.host.includes('localhost') ? 'http://localhost' : ''}/api/get_tick_data?date=${date.getFullYear()}-${((date.getMonth() + 1) < 10) ? ('0'+ (date.getMonth() + 1)) : (date.getMonth() + 1)}-${(date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate()}`
+        `${window.location.host.includes('localhost') ? 'http://localhost:5000' : ''}/api/get_tick_data?date=${date.getFullYear()}-${((date.getMonth() + 1) < 10) ? ('0'+ (date.getMonth() + 1)) : (date.getMonth() + 1)}-${(date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate()}`
       )
         .then((response) => response.json())
         .then((d) => {
