@@ -4,7 +4,7 @@
       <el-header>白银基金套利工具</el-header>
       <el-main>
         <el-row type="flex" justify="space-between">
-          <el-col :span="8" class="updatetime"> 数据更新于：{{ time }} </el-col>
+          <el-col :span="12" class="updatetime"> 数据更新于：{{ time }} <span style='margin-right: 10px' /> 数据源速度：{{is_faster_data ? '快' : '慢'}}</el-col>
           <el-col :span="8" class="autoupdate-switch">
             <el-switch v-model="autoUpdate" active-text="自动刷新" />
           </el-col>
@@ -133,6 +133,7 @@ export default {
         window.localStorage.getItem("autoUpdate") === "1" ? true : false,
       time: "-",
       showCalculator: false,
+      is_faster_data: false
     };
   },
   computed: {
@@ -149,10 +150,11 @@ export default {
   },
   mounted() {
     this.fetchData();
-    setInterval(() => {
+    const timer = setTimeout(() => {
       const hour = (new Date()).getHours()
       if (this.autoUpdate && hour >= 9 && hour < 15) this.fetchData();
-    }, 6000);
+      timer()
+    }, this.is_faster_data ? 4000 : 30000);
     window.sound = new Audio();
     window.sound.src = require("../../assets/notice.mp3");
   },
@@ -204,7 +206,9 @@ export default {
             ag_future_averge_price,
             ag_fund_price,
             time,
+            is_faster_data = false,
           }) => {
+            this.is_faster_data = is_faster_data
             const ag_fund_valuation =
               Math.round(
                 ag_fund_previous_net_value *
