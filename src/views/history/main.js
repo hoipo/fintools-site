@@ -18,6 +18,7 @@ import {
   Input,
   Select,
   Option,
+  Link
 } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
@@ -40,6 +41,7 @@ Vue.use(FormItem);
 Vue.use(Input);
 Vue.use(Select);
 Vue.use(Option);
+Vue.use(Link);
 
 new Vue({
   render: (h) => h(History),
