@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { Message, MessageBox } from "element-ui";
+import { Message } from "element-ui";
 import OperationTips from "../../components/OperationTips.vue";
 import Calculator from "../../components/Calculator.vue";
 import Chart from "../../components/Chart.vue";
@@ -160,18 +160,18 @@ export default {
     timer()
     window.sound = new Audio();
     window.sound.src = require("../../assets/notice.mp3");
-    MessageBox.confirm('<p>本网站已不再被维护，在2021/9/20后将不能访问，请移步到我的新网站继续套利，恭喜发财！</p><div>https://www.bullbullgo.com/ag</div>', '提示', {
-          type: 'warning',
-          dangerouslyUseHTMLString: true,
-          confirmButtonText: '去新网站',
-          cancelButtonText: '留着这里',
-          callback: action => {
-            console.log(action);
-            if (action === 'confirm') {
-              window.location.href = `https://www.bullbullgo.com/ag`
-            }
-          }
-    });
+    // MessageBox.confirm('<p>本网站已不再被维护，在2021/9/20后将不能访问，请移步到我的新网站继续套利，恭喜发财！</p><div>https://www.bullbullgo.com/ag</div>', '提示', {
+    //       type: 'warning',
+    //       dangerouslyUseHTMLString: true,
+    //       confirmButtonText: '去新网站',
+    //       cancelButtonText: '留着这里',
+    //       callback: action => {
+    //         console.log(action);
+    //         if (action === 'confirm') {
+    //           window.location.href = `https://www.bullbullgo.com/ag`
+    //         }
+    //       }
+    // });
   },
   methods: {
     triggerCalculator(bool) {
